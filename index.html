@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Porcentagem</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora Financeira</h1>
+        
+        <div class="menu-buttons">
+            <button class="menu-btn active" data-section="porcentagem">Porcentagem</button>
+            <button class="menu-btn" data-section="valores">Valores</button>
+            <button class="menu-btn" data-section="cadastro">Lançamentos</button>
+            <button class="menu-btn" data-section="juros">Juros</button>
+            <button class="menu-btn" data-section="desconto">Desconto</button>
+            <button class="menu-btn" data-section="financiamento">Financiamento</button>
+        </div>
+        
+        <div id="valores" class="section">
+            <div class="input-group">
+                <label for="valorTotalVal">Valor Total (R$):</label>
+                <input type="text" id="valorTotalVal" placeholder="R$ 1.000,00">
+            </div>
+            
+            <div class="input-group">
+                <label for="grupoVal">Grupo:</label>
+                <select id="grupoVal">
+                    <option value="">Selecione...</option>
+                    <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
+                    <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
+                    <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
+                    <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
+                    <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
+                    <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
+                    <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
+                    <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
+                    <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
+                    <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
+                    <option value="VEÍCULOS">VEÍCULOS</option>
+                    <option value="MAQUINAS">MAQUINAS</option>
+                    <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
+                    <option value="DESMONTES">DESMONTES</option>
+                    <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
+                    <option value="ALOJAMENTO">ALOJAMENTO</option>
+                    <option value="SOCIEDADE">SOCIEDADE</option>
+                    <option value="IMOVEIS">IMOVEIS</option>
+                    <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
+                    <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
+                    <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
+                    <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="itemVal">Item:</label>
+                <select id="itemVal">
+                    <option value="">Selecione primeiro o grupo...</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="obraVal">Obra:</label>
+                <select id="obraVal">
+                    <option value="">Selecione...</option>
+                    <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
+                    <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
+                    <option value="ADEVANILSO">ADEVANILSO</option>
+                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                    <option value="ANANIAS">ANANIAS</option>
+                    <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
+                    <option value="AUDILAN">AUDILAN</option>
+                    <option value="BRENNAND">BRENNAND</option>
+                    <option value="BRENNAND - UMC">BRENNAND - UMC</option>
+                    <option value="CANCELADA">CANCELADA</option>
+                    <option value="CASA DONA RITA">CASA DONA RITA</option>
+                    <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
+                    <option value="COMBRITA">COMBRITA</option>
+                    <option value="CONDEC">CONDEC</option>
+                    <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
+                    <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
+                    <option value="DINC">DINC</option>
+                    <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
+                    <option value="ESCRITORIO">ESCRITORIO</option>
+                    <option value="ETEX GYPSUM">ETEX GYPSUM</option>
+                    <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
+                    <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
+                    <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
+                    <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
+                    <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
+                    <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
+                    <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
+                    <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
+                    <option value="LOCASERV">LOCASERV</option>
+                    <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
+                    <option value="MELOSA">MELOSA</option>
+                    <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
+                    <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
+                    <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
+                    <option value="OFICINA">OFICINA</option>
+                    <option value="PEPSICO">PEPSICO</option>
+                    <option value="PETROMUDAS">PETROMUDAS</option>
+                    <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
+                    <option value="PONTAL / ALF">PONTAL / ALF</option>
+                    <option value="PORTO FINO">PORTO FINO</option>
+                    <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
+                    <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
+                    <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
+                    <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
+                    <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
+                    <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
+                    <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
+                    <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
+                    <option value="SWEET FRUIT">SWEET FRUIT</option>
+                    <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
+                    <option value="VCA">VCA</option>
+                    <option value="VSF">VSF</option>
+                    <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
+                    <option value="(Tudo)">(Tudo)</option>
+                    <option value="FRETE CIF">FRETE CIF</option>
+                    <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="valorItemVal">Valor (R$):</label>
+                <input type="text" id="valorItemVal" placeholder="R$ 100,00">
+            </div>
+            
+            <button id="adicionarValor" class="add-item-btn">Adicionar Valor</button>
+            
+            <div class="itens-cadastrados">
+                <h3>Valores Adicionados:</h3>
+                <ul id="listaValores"></ul>
+            </div>
+            
+            <div class="total-valores">
+                <h3>Total Adicionado:</h3>
+                <p id="totalValores">R$ 0,00</p>
+            </div>
+            
+            <div class="diferenca-valores">
+                <h3>Diferença:</h3>
+                <p id="diferencaValores">R$ 0,00</p>
+            </div>
+            
+            <button id="novaSessaoVal" class="add-item-btn">Nova Sessão</button>
+            <button id="gerarPDFVal" class="pdf-btn">Gerar PDF Completo</button>
+            
+            <div class="sessoes-container">
+                <h3>Sessões:</h3>
+                <div id="listaSessoesVal"></div>
+            </div>DFVal" class="pdf-btn">Gerar PDF dos Valores</button>
+        </div>
+        
+        <div id="cadastro" class="section">
+            <div class="input-group">
+                <label for="valorTotalLanc">Valor Total (R$):</label>
+                <input type="text" id="valorTotalLanc" placeholder="R$ 1.000,00">
+            </div>
+            
+            <div class="input-group">
+                <label for="grupoLanc">Grupo:</label>
+                <select id="grupoLanc">
+                    <option value="">Selecione...</option>
+                    <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
+                    <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
+                    <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
+                    <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
+                    <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
+                    <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
+                    <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
+                    <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
+                    <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
+                    <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
+                    <option value="VEÍCULOS">VEÍCULOS</option>
+                    <option value="MAQUINAS">MAQUINAS</option>
+                    <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
+                    <option value="DESMONTES">DESMONTES</option>
+                    <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
+                    <option value="ALOJAMENTO">ALOJAMENTO</option>
+                    <option value="SOCIEDADE">SOCIEDADE</option>
+                    <option value="IMOVEIS">IMOVEIS</option>
+                    <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
+                    <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
+                    <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
+                    <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="itemLanc">Item:</label>
+                <select id="itemLanc">
+                    <option value="">Selecione primeiro o grupo...</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="obraLanc">Obra:</label>
+                <select id="obraLanc">
+                    <option value="">Selecione...</option>
+                    <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
+                    <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
+                    <option value="ADEVANILSO">ADEVANILSO</option>
+                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                    <option value="ANANIAS">ANANIAS</option>
+                    <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
+                    <option value="AUDILAN">AUDILAN</option>
+                    <option value="BRENNAND">BRENNAND</option>
+                    <option value="BRENNAND - UMC">BRENNAND - UMC</option>
+                    <option value="CANCELADA">CANCELADA</option>
+                    <option value="CASA DONA RITA">CASA DONA RITA</option>
+                    <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
+                    <option value="COMBRITA">COMBRITA</option>
+                    <option value="CONDEC">CONDEC</option>
+                    <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
+                    <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
+                    <option value="DINC">DINC</option>
+                    <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
+                    <option value="ESCRITORIO">ESCRITORIO</option>
+                    <option value="ETEX GYPSUM">ETEX GYPSUM</option>
+                    <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
+                    <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
+                    <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
+                    <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
+                    <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
+                    <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
+                    <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
+                    <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
+                    <option value="LOCASERV">LOCASERV</option>
+                    <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
+                    <option value="MELOSA">MELOSA</option>
+                    <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
+                    <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
+                    <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
+                    <option value="OFICINA">OFICINA</option>
+                    <option value="PEPSICO">PEPSICO</option>
+                    <option value="PETROMUDAS">PETROMUDAS</option>
+                    <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
+                    <option value="PONTAL / ALF">PONTAL / ALF</option>
+                    <option value="PORTO FINO">PORTO FINO</option>
+                    <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
+                    <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
+                    <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
+                    <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
+                    <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
+                    <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
+                    <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
+                    <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
+                    <option value="SWEET FRUIT">SWEET FRUIT</option>
+                    <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
+                    <option value="VCA">VCA</option>
+                    <option value="VSF">VSF</option>
+                    <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
+                    <option value="(Tudo)">(Tudo)</option>
+                    <option value="FRETE CIF">FRETE CIF</option>
+                    <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="porcentagemLanc">Porcentagem (%):</label>
+                <input type="number" id="porcentagemLanc" placeholder="10" step="0.01">
+            </div>
+            
+            <div class="resultado-lanc">
+                <h3>Resultado:</h3>
+                <p id="valorCalculadoLanc">R$ 0,00</p>
+            </div>
+            
+            <button id="adicionarLancamento" class="add-item-btn">Adicionar Lançamento</button>
+            
+            <div class="itens-cadastrados">
+                <h3>Lançamentos:</h3>
+                <ul id="listaLancamentos"></ul>
+            </div>
+            
+            <div class="total-lancamentos">
+                <h3>Total dos Lançamentos:</h3>
+                <p id="totalLancamentos">R$ 0,00</p>
+            </div>
+            
+            <button id="novaSessao" class="add-item-btn">Nova Sessão</button>
+            <button id="gerarPDFLanc" class="pdf-btn">Gerar PDF Completo</button>
+            
+            <div class="sessoes-container">
+                <h3>Sessões:</h3>
+                <div id="listaSessoes"></div>
+            </div>
+        </div>
+        
+        <div id="porcentagem" class="section active">
+            <div class="input-group">
+                <label for="valorTotal">Valor Total (R$):</label>
+                <input type="text" id="valorTotal" placeholder="R$ 1.000,00">
+            </div>
+            
+            <div class="porcentagens-container">
+                <div class="porcentagens-header">
+                    <label>Porcentagens (%):</label>
+                    <button type="button" id="addPorcentagem">+</button>
+                </div>
+                <div id="porcentagensList">
+                    <div class="porcentagem-item">
+                        <select class="nome-item">
+                            <option value="">Selecione...</option>
+                        </select>
+                        <input type="number" class="porcentagem" placeholder="10" step="0.01">
+                        <span class="resultado-item">R$ 0,00</span>
+                        <button type="button" class="remove-btn">×</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resultados-detalhados">
+                <h3>Resultados:</h3>
+                <div id="listaResultados"></div>
+            </div>
+            
+            <div class="total-porcentagens">
+                <h3>Total das Porcentagens:</h3>
+                <p id="totalCalculado">R$ 0,00</p>
+            </div>
+            
+            <button id="gerarPDF" class="pdf-btn">Gerar PDF</button>
+        </div>
+        
+        <div id="juros" class="section">
+            <p>Calculadora de Juros - Em breve</p>
+        </div>
+        
+        <div id="desconto" class="section">
+            <p>Calculadora de Desconto - Em breve</p>
+        </div>
+        
+        <div id="financiamento" class="section">
+            <p>Calculadora de Financiamento - Em breve</p>
+        </div>
+    </div>
+
+    <script>
+        const valorTotal = document.getElementById('valorTotal');
+        const addBtn = document.getElementById('addPorcentagem');
+        const porcentagensList = document.getElementById('porcentagensList');
+        
+        // Elementos de lançamento
+        const valorTotalLanc = document.getElementById('valorTotalLanc');
+        const grupoLanc = document.getElementById('grupoLanc');
+        const itemLanc = document.getElementById('itemLanc');
+        const obraLanc = document.getElementById('obraLanc');
+        const porcentagemLanc = document.getElementById('porcentagemLanc');
+        const valorCalculadoLanc = document.getElementById('valorCalculadoLanc');
+        const adicionarLancamentoBtn = document.getElementById('adicionarLancamento');
+        const listaLancamentos = document.getElementById('listaLancamentos');
+        
+        let itensCadastrados = JSON.parse(localStorage.getItem('itensCadastrados')) || [];
+        let lancamentos = JSON.parse(localStorage.getItem('lancamentos')) || [];
+        let sessoes = JSON.parse(localStorage.getItem('sessoes')) || [];
+        let sessaoAtual = 1;
+        let valores = JSON.parse(localStorage.getItem('valores')) || [];
+        let sessoesVal = JSON.parse(localStorage.getItem('sessoesVal')) || [];
+        let sessaoAtualVal = 1;
+        
+        // Elementos da aba valores
+        const valorTotalVal = document.getElementById('valorTotalVal');
+        const grupoVal = document.getElementById('grupoVal');
+        const itemVal = document.getElementById('itemVal');
+        const obraVal = document.getElementById('obraVal');
+        const valorItemVal = document.getElementById('valorItemVal');
+        const adicionarValorBtn = document.getElementById('adicionarValor');
+        const listaValores = document.getElementById('listaValores');
+        const totalValores = document.getElementById('totalValores');
+        const diferencaValores = document.getElementById('diferencaValores');
+        
+        const planoContas = {
+            'DESPESAS ADMINISTRATIVAS': [
+                'AGUA E ESGOTO',
+                'TELEFONE',
+                'INTERNET',
+                'MAT. EXPEDIENTE',
+                'HIGIENE E LIMPEZA',
+                'ALUGUEL CASA DE APOIO',
+                'ASSESSORIA JURIDICA',
+                'CONTABILIDADE',
+                'MAT. E SER. DE INFORMATICA',
+                'MENSALIDADE DO SISTEMA',
+                'MAT. COPA E COZINHA',
+                'AGUA MINERAL',
+                'SEGURO DE VEICULO',
+                'ALUGUEIS DE IMOVEIS',
+                'ENERGIA ELETRICA ADM',
+                'ALIMENTAÇÃO'
+            ],
+            'DESPESAS NAO RECORRENTES': [
+                'PROPAGANDA E PUBLICIDADE',
+                'COMISSOES SOBRE VENDAS',
+                'CORREIOS',
+                'PREMIOS',
+                'SEGUROS',
+                'CONFRATERNIZACAO',
+                'VIAGENS E ESTADIAS',
+                'CONSULTORIA PJ',
+                'CONTRIBUICAO/DOACAO',
+                'TELECOMUNICACAO',
+                'MANUTENÇÃO DE INFRAESTRUTURA',
+                'CORTESIA'
+            ],
+            'DESPESAS FINANCEIRAS': [
+                'CESTA - BANCO',
+                'JUROS E MORA',
+                'DESCONTOS CONCEDIDOS'
+            ],
+            'IMPOSTOS TAXAS E CONTRIBUICOES': [
+                'TAXA IBAMA',
+                'DPVAT',
+                'IPTU',
+                'ISS RET. NA FONTE SER. TOMADOS',
+                'DAE 10',
+                'DAE 20',
+                'ZONA AZUL / ESTACIONAMENTO',
+                'LICENCA DO EXERCITO',
+                'CONTRIBUICAO SINDICAL',
+                'CUSTAS PROCESSUAIS E CARTORIO',
+                'LICENCA DOS BOMBEIROS',
+                'DAE JUCEPE',
+                'TRIMESTRAL CSLL',
+                'TRIMESTRAL IRPJ',
+                'COFINS',
+                'PIS',
+                'ART',
+                'IPVA',
+                'BOMBEIRO',
+                'LICENC. VEÍCULO',
+                'INFRAÇÃO/MULTA DE TRÂNSITO',
+                'ANUIDADE',
+                'ISS',
+                'VISTORIA VEICULAR',
+                'EMPL. VEICULAR / TRANSFERÊNCIA',
+                'ALVARÁ DE FUNCIONAMENTO'
+            ],
+            'EMPRESTIMOS E FINANCIAMENTOS': [
+                'GIRO RAPIDO ITAU',
+                'EMPRESTIMO ITAU 12X',
+                'CAIXA ECONOMICA FEDERAL',
+                'PRONAMP'
+            ],
+            'CUSTOS/DESPESAS FIXAS': [
+                'ENGENHEIRO DE MINA',
+                'ENGENHEIRO DE SEGURANCA',
+                'ENERGIA ELETRICA',
+                'FRETES E CARRETOS',
+                'ENGENHEIRO MECANICO',
+                'PIPA D\'ÁGUA',
+                'INSUMOS',
+                'COMBUSTÍVEIS'
+            ],
+            'FOLHA DE PG E DESP. COM PESSOA': [
+                'FOLHA',
+                'GRATIFICACOES',
+                'GPS SOBRE FOLHA',
+                'IRRF (FOLHA)',
+                'PENSAO ALIMENTICIA',
+                'VALE TRANSPORTE',
+                'EXAMES',
+                'FGTS SOBRE FOLHA',
+                'RESCISAO',
+                '13 SALARIO',
+                'FERIAS',
+                'MULTA RESCISORIA',
+                'ACORDOS TRABALHISTAS',
+                'OUTRAS DESP. FUNC.',
+                'DIARIA OPE',
+                'PRO-LABORE',
+                'ALIMENTAÇÃO',
+                'ADIANTAMENTO DE SALARIO',
+                'PLANO DE SAÚDE',
+                'FGTS RESCISÓRIO'
+            ],
+            'MATERIAIS E INSUMOS APLICADOS EM OBRA': [
+                'AREIA',
+                'BRITA',
+                'BGS',
+                'ATERRO',
+                'CASCALHO',
+                'PÓ DE PEDRA',
+                'OUTROS INSUMOS',
+                'LOCAÇÃO DE CAÇAMBA'
+            ],
+            'SEGURANÇA DO TRABALHO': [
+                'EPI/EPC',
+                'FARDAMENTOS',
+                'CURSOS E TREINAMENTOS',
+                'EXAMES E AVALIAÇÕES',
+                'MEDICAMENTOS',
+                'LAVANDERIA'
+            ],
+            'FRETES E CARRETOS': [
+                'RODOVIÁRIO FRETE',
+                'FERROVIÁRIO FRETE',
+                'AÉREO FRETE',
+                'HIDROVIARIO FRETE'
+            ],
+            'VEÍCULOS': [
+                'COMBUSTIVEL VEIC.',
+                'MANUTENÇÃO INTERNA VEIC.',
+                'MATERIAL DE DESGASTE VEIC.',
+                'LUBRIFICANTES VEIC.',
+                'ALUGUEL VEICULOS VEIC.',
+                'PNEU - COMPRA VEIC.',
+                'PNEU - REFORMA VEIC.',
+                'PNEU - CONSERTO VEIC.',
+                'MANUTENÇÃO EXTERNA VEIC.',
+                'BORRACHARIA',
+                'LOCAÇÃO VEIC.',
+                'ALINHAMENTO E BALANC. VEIC.'
+            ],
+            'MAQUINAS': [
+                'COMBUSTIVEL MAQ.',
+                'MANUTENÇÃO INTERNA MAQ.',
+                'MATERIAL DE DESGASTE MAQ.',
+                'LUBRIFICANTES MAQ.',
+                'ALUGUEL MAQUINAS MAQ.',
+                'PNEU - COMPRA MAQ.',
+                'PNEU - REFORMA MAQ.',
+                'PNEU - CONSERTO MAQ.',
+                'MANUTENÇÃO EXTERNA MAQ.',
+                'BORRACHARIA',
+                'LOCAÇÃO MÁQ'
+            ],
+            'EQUIPAMENTOS': [
+                'COMBUSTIVEL EQUIP.',
+                'MANUTENÇÃO INTERNA EQUIP.',
+                'MATERIAL DE DESGASTE EQUIP.',
+                'LUBRIFICANTES EQUIP.',
+                'ALUGUEL EQUIPAMENTOS EQUIP.',
+                'PNEU - COMPRA EQUIP.',
+                'PNEU - REFORMA EQUIP.',
+                'PNEU - CONSERTO EQUIP.',
+                'MANUTENÇÃO EXTERNA EQUIP.',
+                'BORRACHARIA',
+                'LOCAÇÃO EQUIP.'
+            ],
+            'DESMONTES': [
+                'EXPLOSIVOS',
+                'PERFURAÇÃO',
+                'ESCOLTA'
+            ],
+            'VIGILÂNCIA PATRIMONIAL': [
+                'RAÇÃO ANIMAL',
+                'VIGILÂNCIA ELETRÔNICA'
+            ],
+            'ALOJAMENTO': [
+                'MÓVEIS E UTENSÍLIOS',
+                'CAMA, MESA E BANHO',
+                'ALUGUEL',
+                'ÁGUA',
+                'ENERGIA ELETRICA'
+            ],
+            'SOCIEDADE': [
+                'SOCIOS'
+            ],
+            'IMOVEIS': [
+                'TERRENO'
+            ],
+            'VEIC. MAQ. EQUIP.': [
+                'VEÍCULO INV.',
+                'MÁQUINA INV.',
+                'EQUIPAMENTO INV.'
+            ],
+            'ELETRODOMESTICO/COMPUTADORES': [
+                'VENTILADORES'
+            ],
+            'FERRAMENTAS E MATERIAL PERMANENTE': [
+                'FERRAMENTAS'
+            ],
+            'IMOVEIS MANUT.': [
+                'TERRENO MANUT.'
+            ]
+        };
+        
+        function salvarItens() {
+            localStorage.setItem('itensCadastrados', JSON.stringify(itensCadastrados));
+        }
+        
+        function salvarLancamentos() {
+            localStorage.setItem('lancamentos', JSON.stringify(lancamentos));
+        }
+        
+        function salvarSessoes() {
+            localStorage.setItem('sessoes', JSON.stringify(sessoes));
+        }
+        
+        function atualizarListaSessoes() {
+            const listaSessoes = document.getElementById('listaSessoes');
+            listaSessoes.innerHTML = sessoes.map((sessao, index) => 
+                `<div class="sessao-item">
+                    <h4>Sessão ${sessao.numero} - Total: ${formatarMoeda(sessao.total)}</h4>
+                    <button onclick="removerSessao(${index})">×</button>
+                </div>`
+            ).join('');
+        }
+        
+        window.removerSessao = function(index) {
+            sessoes.splice(index, 1);
+            salvarSessoes();
+            atualizarListaSessoes();
+        }
+        
+        function salvarValores() {
+            localStorage.setItem('valores', JSON.stringify(valores));
+        }
+        
+        function atualizarListaValores() {
+            listaValores.innerHTML = valores.map((val, index) => 
+                `<li class="valor-item">
+                    <div><strong>Obra:</strong> ${val.obra}</div>
+                    <div><strong>Grupo:</strong> ${val.grupo}</div>
+                    <div><strong>Item:</strong> ${val.item}</div>
+                    <div><strong>Valor:</strong> ${formatarMoeda(val.valor)}</div>
+                    <button onclick="removerValor(${index})">×</button>
+                </li>`
+            ).join('');
+            
+            const total = valores.reduce((sum, val) => sum + val.valor, 0);
+            totalValores.textContent = formatarMoeda(total);
+            
+            const valorTotal = parseFloat(valorTotalVal.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            const diferenca = valorTotal - total;
+            diferencaValores.textContent = formatarMoeda(diferenca);
+            
+            if (Math.abs(diferenca) < 0.01) {
+                diferencaValores.style.color = '#28a745';
+            } else {
+                diferencaValores.style.color = '#dc3545';
+            }
+        }
+        
+        window.removerValor = function(index) {
+            valores.splice(index, 1);
+            salvarValores();
+            atualizarListaValores();
+        }
+        
+        function calcularLancamento() {
+            const total = parseFloat(valorTotalLanc.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            const percent = parseFloat(porcentagemLanc.value) || 0;
+            const resultado = (total * percent) / 100;
+            valorCalculadoLanc.textContent = formatarMoeda(resultado);
+        }
+        
+        function atualizarListaLancamentos() {
+            listaLancamentos.innerHTML = lancamentos.map((lanc, index) => 
+                `<li class="lancamento-item">
+                    <div><strong>Obra:</strong> ${lanc.obra}</div>
+                    <div><strong>Grupo:</strong> ${lanc.grupo}</div>
+                    <div><strong>Item:</strong> ${lanc.item}</div>
+                    <div><strong>Valor:</strong> ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)</div>
+                    <button onclick="removerLancamento(${index})">×</button>
+                </li>`
+            ).join('');
+            
+            const total = lancamentos.reduce((sum, lanc) => sum + lanc.valor, 0);
+            document.getElementById('totalLancamentos').textContent = formatarMoeda(total);
+        }
+        
+        window.removerLancamento = function(index) {
+            lancamentos.splice(index, 1);
+            salvarLancamentos();
+            atualizarListaLancamentos();
+        }
+        
+        function atualizarSelects() {
+            document.querySelectorAll('.nome-item').forEach(select => {
+                const valorAtual = select.value;
+                select.innerHTML = `
+                    <option value="">Selecione...</option>
+                    ${itensCadastrados.map(item => `<option value="${item.nome}">${item.nome} - ${item.grupo}</option>`).join('')}
+                `;
+                select.value = valorAtual;
+            });
+        }
+        
+        atualizarSelects();
+        atualizarListaLancamentos();
+        atualizarListaSessoes();
+        atualizarListaValores();
+        
+        // Evento para grupo da aba valores
+        grupoVal.addEventListener('change', function() {
+            const grupoSelecionado = this.value;
+            itemVal.innerHTML = '<option value="">Selecione...</option>';
+            
+            if (grupoSelecionado && planoContas[grupoSelecionado]) {
+                planoContas[grupoSelecionado].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    itemVal.appendChild(option);
+                });
+            }
+        });
+        
+        // Eventos da aba valores
+        valorTotalVal.addEventListener('input', function() {
+            let valor = this.value.replace(/[^\d]/g, '');
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toFixed(2);
+                this.value = formatarMoeda(parseFloat(valor));
+            }
+            atualizarListaValores();
+        });
+        
+        valorItemVal.addEventListener('input', function() {
+            let valor = this.value.replace(/[^\d]/g, '');
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toFixed(2);
+                this.value = formatarMoeda(parseFloat(valor));
+            }
+        });
+        
+        adicionarValorBtn.addEventListener('click', function() {
+            const grupo = grupoVal.value;
+            const item = itemVal.value;
+            const obra = obraVal.value;
+            const valor = parseFloat(valorItemVal.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            
+            if (grupo && item && obra && valor > 0) {
+                valores.push({grupo, item, obra, valor});
+                salvarValores();
+                obraVal.value = '';
+                valorItemVal.value = '';
+                atualizarListaValores();
+            }
+        });
+        
+        // PDF dos valores
+        document.getElementById('gerarPDFVal').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let y = 5;
+            
+            valores.forEach(val => {
+                doc.setFontSize(5);
+                doc.text(`OBRA: ${val.obra.toUpperCase()}`, 3, y+2);
+                doc.text(`GRUPO: ${val.grupo.toUpperCase()}`, 3, y+4);
+                doc.text(`ITEM: ${val.item.toUpperCase()}`, 3, y+6);
+                doc.text(`VALOR = ${formatarMoeda(val.valor)}`, 3, y+8);
+                y += 12;
+            });
+            
+            const total = valores.reduce((sum, val) => sum + val.valor, 0);
+            y += 2;
+            doc.setLineWidth(0.5);
+            doc.rect(2, y, 50, 5);
+            doc.setFontSize(6);
+            doc.text(`TOTAL: ${formatarMoeda(total)}`, 3, y+3);
+            
+            doc.save('relatorio-valores.pdf');
+        });
+        
+        // Nova sessão
+        document.getElementById('novaSessao').addEventListener('click', function() {
+            if (lancamentos.length > 0) {
+                const total = lancamentos.reduce((sum, lanc) => sum + lanc.valor, 0);
+                sessoes.push({
+                    numero: sessaoAtual++,
+                    lancamentos: [...lancamentos],
+                    total: total
+                });
+                lancamentos = [];
+                salvarSessoes();
+                salvarLancamentos();
+                atualizarListaLancamentos();
+                atualizarListaSessoes();
+            }
+        });
+        
+        // Eventos de lançamento
+        grupoLanc.addEventListener('change', function() {
+            const grupoSelecionado = this.value;
+            itemLanc.innerHTML = '<option value="">Selecione...</option>';
+            
+            if (grupoSelecionado && planoContas[grupoSelecionado]) {
+                planoContas[grupoSelecionado].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    itemLanc.appendChild(option);
+                });
+            }
+        });
+        
+        valorTotalLanc.addEventListener('input', function() {
+            let valor = this.value.replace(/[^\d]/g, '');
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toFixed(2);
+                this.value = formatarMoeda(parseFloat(valor));
+            }
+            calcularLancamento();
+        });
+        
+        porcentagemLanc.addEventListener('input', calcularLancamento);
+        
+        adicionarLancamentoBtn.addEventListener('click', function() {
+            const total = parseFloat(valorTotalLanc.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            const grupo = grupoLanc.value;
+            const item = itemLanc.value;
+            const obra = obraLanc.value;
+            const percent = parseFloat(porcentagemLanc.value) || 0;
+            const valor = (total * percent) / 100;
+            
+            if (grupo && item && obra && percent > 0) {
+                lancamentos.push({grupo, item, obra, porcentagem: percent, valor, valorTotal: total});
+                salvarLancamentos();
+                obraLanc.value = '';
+                porcentagemLanc.value = '';
+                valorCalculadoLanc.textContent = 'R$ 0,00';
+                atualizarListaLancamentos();
+            }
+        });
+        
+        // PDF completo
+        document.getElementById('gerarPDFLanc').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let y = 5;
+            let totalGeral = 0;
+            
+            // Sessões salvas
+            sessoes.forEach(sessao => {
+                doc.setFontSize(7);
+                doc.text(`SESSÃO ${sessao.numero}`, 3, y);
+                y += 5;
+                
+                sessao.lancamentos.forEach(lanc => {
+                    doc.setFontSize(5);
+                    doc.text(`OBRA: ${lanc.obra.toUpperCase()}`, 3, y+2);
+                    doc.text(`GRUPO: ${lanc.grupo.toUpperCase()}`, 3, y+4);
+                    doc.text(`SUBGRUPO: ${lanc.item.toUpperCase()}`, 3, y+6);
+                    
+                    doc.setFontSize(4.5);
+                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)`, 3, y+8);
+                    y += 11;
+                });
+                
+                doc.setFontSize(6);
+                doc.text(`Total Sessão: ${formatarMoeda(sessao.total)}`, 3, y);
+                y += 8;
+                totalGeral += sessao.total;
+            });
+            
+            // Sessão atual
+            if (lancamentos.length > 0) {
+                doc.setFontSize(7);
+                doc.text(`SESSÃO ATUAL`, 3, y);
+                y += 5;
+                
+                lancamentos.forEach(lanc => {
+                    doc.setFontSize(5);
+                    doc.text(`OBRA: ${lanc.obra.toUpperCase()}`, 3, y+2);
+                    doc.text(`GRUPO: ${lanc.grupo.toUpperCase()}`, 3, y+4);
+                    doc.text(`SUBGRUPO: ${lanc.item.toUpperCase()}`, 3, y+6);
+                    
+                    doc.setFontSize(4.5);
+                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)`, 3, y+8);
+                    y += 11;
+                });
+                
+                const totalAtual = lancamentos.reduce((sum, lanc) => sum + lanc.valor, 0);
+                doc.setFontSize(6);
+                doc.text(`Total Atual: ${formatarMoeda(totalAtual)}`, 3, y);
+                y += 8;
+                totalGeral += totalAtual;
+            }
+            
+            // Total geral
+            y += 2;
+            doc.setLineWidth(0.5);
+            doc.rect(2, y, 50, 5);
+            doc.setFontSize(6);
+            doc.text(`TOTAL GERAL: ${formatarMoeda(totalGeral)}`, 3, y+3);
+            
+            doc.save('relatorio-completo.pdf');
+        });
+        
+        // Gerar PDF
+        document.getElementById('gerarPDF').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const total = parseFloat(valorTotal.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            const porcentagens = document.querySelectorAll('.porcentagem');
+            const nomes = document.querySelectorAll('.nome-item');
+            
+            // Agrupar dados
+            const grupos = {};
+            let somaTotal = 0;
+            
+            porcentagens.forEach((input, index) => {
+                const percent = parseFloat(input.value) || 0;
+                const resultado = (total * percent) / 100;
+                const nome = nomes[index].value;
+                
+                if (percent > 0 && nome) {
+                    const item = itensCadastrados.find(i => i.nome === nome);
+                    const grupo = item ? item.grupo : 'Sem grupo';
+                    const subgrupo = item ? item.subgrupo : 'Sem subgrupo';
+                    
+                    if (!grupos[grupo]) grupos[grupo] = {};
+                    if (!grupos[grupo][subgrupo]) grupos[grupo][subgrupo] = [];
+                    
+                    grupos[grupo][subgrupo].push({ nome, valor: resultado });
+                    somaTotal += resultado;
+                }
+            });
+            
+            let y = 20;
+            
+            Object.keys(grupos).forEach(grupo => {
+                doc.setFontSize(12);
+                doc.text(grupo.toUpperCase(), 20, y);
+                y += 8;
+                
+                Object.keys(grupos[grupo]).forEach(subgrupo => {
+                    doc.setFontSize(10);
+                    doc.text(`  ${subgrupo.toUpperCase()}`, 25, y);
+                    y += 6;
+                    
+                    grupos[grupo][subgrupo].forEach(item => {
+                        doc.setFillColor(173, 216, 230);
+                        doc.rect(30, y-4, 60, 6, 'F');
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFontSize(9);
+                        doc.text(`   VALOR = ${formatarMoeda(item.valor)}`, 30, y);
+                        y += 8;
+                    });
+                });
+                y += 5;
+            });
+            
+            doc.save('relatorio-porcentagens.pdf');
+        });
+
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+        }
+
+        function calcular() {
+            const total = parseFloat(valorTotal.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            const porcentagens = document.querySelectorAll('.porcentagem');
+            const nomes = document.querySelectorAll('.nome-item');
+            const resultados = document.querySelectorAll('.resultado-item');
+            const totalCalculado = document.getElementById('totalCalculado');
+            const listaResultados = document.getElementById('listaResultados');
+            
+            let somaTotal = 0;
+            let htmlResultados = '';
+            
+            porcentagens.forEach((input, index) => {
+                const percent = parseFloat(input.value) || 0;
+                const resultado = (total * percent) / 100;
+                const nome = nomes[index].value || `Item ${index + 1}`;
+                
+                resultados[index].textContent = formatarMoeda(resultado);
+                somaTotal += resultado;
+                
+                if (percent > 0) {
+                    htmlResultados += `<div class="resultado-linha">${nome}: ${formatarMoeda(resultado)} (${percent}%)</div>`;
+                }
+            });
+            
+            listaResultados.innerHTML = htmlResultados;
+            totalCalculado.textContent = formatarMoeda(somaTotal);
+            
+            if (Math.abs(somaTotal - total) < 0.01) {
+                totalCalculado.style.color = '#28a745';
+            } else {
+                totalCalculado.style.color = '#dc3545';
+            }
+        }
+
+        function adicionarPorcentagem() {
+            const div = document.createElement('div');
+            div.className = 'porcentagem-item';
+            div.innerHTML = `
+                <select class="nome-item">
+                    <option value="">Selecione...</option>
+                    ${itensCadastrados.map(item => `<option value="${item.nome}">${item.nome} - ${item.grupo} (${item.subgrupo})</option>`).join('')}
+                </select>
+                <input type="number" class="porcentagem" placeholder="10" step="0.01">
+                <span class="resultado-item">R$ 0,00</span>
+                <button type="button" class="remove-btn">×</button>
+            `;
+            porcentagensList.appendChild(div);
+            
+            div.querySelector('.porcentagem').addEventListener('input', calcular);
+            div.querySelector('.nome-item').addEventListener('change', calcular);
+            div.querySelector('.remove-btn').addEventListener('click', function() {
+                div.remove();
+                calcular();
+            });
+        }
+
+        valorTotal.addEventListener('input', function() {
+            let valor = this.value.replace(/[^\d]/g, '');
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toFixed(2);
+                this.value = formatarMoeda(parseFloat(valor));
+            }
+            calcular();
+        });
+
+        addBtn.addEventListener('click', adicionarPorcentagem);
+        document.querySelector('.porcentagem').addEventListener('input', calcular);
+        document.querySelector('.nome-item').addEventListener('change', calcular);
+        document.querySelector('.remove-btn').addEventListener('click', function() {
+            this.parentElement.remove();
+            calcular();
+        });
+        
+        // Navegação entre seções
+        document.querySelectorAll('.menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.section).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
