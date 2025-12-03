@@ -6,6 +6,8 @@
     <title>Calculadora de Porcentagem</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="sidebar">
@@ -20,6 +22,9 @@
             <button class="nav-btn" data-section="cadastro">
                 <span>📋</span> Lançamentos
             </button>
+            <button class="nav-btn" data-section="analise">
+                <span>📈</span> Análise
+            </button>
         </div>
         
         <div class="sidebar-totals">
@@ -31,6 +36,7 @@
                 <h4>Diferença:</h4>
                 <span id="sidebarValue2">R$ 0,00</span>
             </div>
+            <button class="sidebar-clear-btn" id="clearPorcentagem" style="display: block;">🗑️ Limpar</button>
             <div class="sidebar-section" id="sidebarValores" style="display: none;">
                 <div class="sidebar-valores">
                     <h3>Valores Adicionados:</h3>
@@ -40,6 +46,7 @@
                     <h3>Sessões:</h3>
                     <div id="sidebarListaSessoesVal"></div>
                 </div>
+                <button class="sidebar-clear-btn" id="clearValores">🗑️ Limpar</button>
             </div>
             <div class="sidebar-section" id="sidebarLancamentos" style="display: none;">
                 <div class="sidebar-total-item" id="sidebarResultado">
@@ -54,6 +61,7 @@
                     <h3>Sessões:</h3>
                     <div id="sidebarListaSessoes"></div>
                 </div>
+                <button class="sidebar-clear-btn" id="clearLancamentos">🗑️ Limpar</button>
             </div>
         </div>
     </div>
@@ -315,13 +323,42 @@
                 </div>
                 
                 <div class="input-group">
+                    <label>Tipo de Valor:</label>
+                    <select id="tipoValorLanc">
+                        <option value="porcentagem">Porcentagem (%)</option>
+                        <option value="valor">Valor Fixo (R$)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group" id="grupoPorcentagem">
                     <label for="porcentagemLanc">Porcentagem (%):</label>
                     <input type="number" id="porcentagemLanc" placeholder="10" step="0.01">
+                </div>
+                
+                <div class="input-group" id="grupoValorFixo" style="display: none;">
+                    <label for="valorFixoLanc">Valor (R$):</label>
+                    <input type="text" id="valorFixoLanc" placeholder="R$ 100,00">
                 </div>
                 
                 <button id="adicionarLancamento" class="add-item-btn">Adicionar Lançamento</button>
                 <button id="novaSessao" class="add-item-btn">Nova Sessão</button>
                 <button id="gerarPDFLanc" class="pdf-btn">Gerar PDF Completo</button>
+            </div>
+            
+            <div id="analise" class="section">
+                <h2>📈 Análise Financeira</h2>
+                <div class="input-group">
+                    <label for="excelFile">Importar Planilha Excel:</label>
+                    <input type="file" id="excelFile" accept=".xlsx,.xls" />
+                </div>
+                <button id="processarAnalise" class="add-item-btn" style="display: none;">Análise</button>
+                <button id="resetarAnalise" class="pdf-btn" style="display: none;">Resetar Análise</button>
+                <button id="gerarPDFAnalise" class="pdf-btn" style="display: none;">Gerar PDF da Análise</button>
+                <button id="limparCache" style="background: transparent; border: 1px solid #ffffff; color: #888; padding: 5px 10px; border-radius: 3px; font-size: 10px; margin-top: 10px; cursor: pointer;">🗑️</button>
+                <div id="chartContainer" style="display: none; margin-top: 20px;">
+                    <canvas id="despesasChart" width="400" height="200"></canvas>
+                </div>
+                <div id="dadosImportados" style="margin-top: 20px;"></div>
             </div>
             
             <!-- Elementos ocultos para cálculos -->
@@ -368,6 +405,8 @@
         const itemLanc = document.getElementById('itemLanc');
         const obraLanc = document.getElementById('obraLanc');
         const porcentagemLanc = document.getElementById('porcentagemLanc');
+        const valorFixoLanc = document.getElementById('valorFixoLanc');
+        const tipoValorLanc = document.getElementById('tipoValorLanc');
         const valorCalculadoLanc = document.getElementById('valorCalculadoLanc');
         const adicionarLancamentoBtn = document.getElementById('adicionarLancamento');
         const listaLancamentos = document.getElementById('listaLancamentos');
@@ -666,8 +705,15 @@
         
         function calcularLancamento() {
             const total = parseFloat(valorTotalLanc.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-            const percent = parseFloat(porcentagemLanc.value) || 0;
-            const resultado = (total * percent) / 100;
+            let resultado = 0;
+            
+            if (tipoValorLanc.value === 'porcentagem') {
+                const percent = parseFloat(porcentagemLanc.value) || 0;
+                resultado = (total * percent) / 100;
+            } else {
+                resultado = parseFloat(valorFixoLanc.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+            }
+            
             valorCalculadoLanc.textContent = formatarMoeda(resultado);
             
             if (document.querySelector('.nav-btn.active').dataset.section === 'cadastro') {
@@ -681,7 +727,7 @@
                     <div><strong>Obra:</strong> ${lanc.obra}</div>
                     <div><strong>Grupo:</strong> ${lanc.grupo}</div>
                     <div><strong>Item:</strong> ${lanc.item}</div>
-                    <div><strong>Valor:</strong> ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)</div>
+                    <div><strong>Valor:</strong> ${formatarMoeda(lanc.valor)} ${lanc.tipo ? (lanc.tipo ? `(${lanc.tipo})` : '') : `(${lanc.porcentagem}%)`}</div>
                     <button onclick="removerLancamento(${index})">×</button>
                 </li>`
             ).join('');
@@ -865,6 +911,28 @@
             calcularLancamento();
         });
         
+        tipoValorLanc.addEventListener('change', function() {
+            if (this.value === 'porcentagem') {
+                document.getElementById('grupoPorcentagem').style.display = 'block';
+                document.getElementById('grupoValorFixo').style.display = 'none';
+                valorFixoLanc.value = '';
+            } else {
+                document.getElementById('grupoPorcentagem').style.display = 'none';
+                document.getElementById('grupoValorFixo').style.display = 'block';
+                porcentagemLanc.value = '';
+            }
+            calcularLancamento();
+        });
+        
+        valorFixoLanc.addEventListener('input', function() {
+            let valor = this.value.replace(/[^\d]/g, '');
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toFixed(2);
+                this.value = formatarMoeda(parseFloat(valor));
+            }
+            calcularLancamento();
+        });
+        
         porcentagemLanc.addEventListener('input', calcularLancamento);
         
         adicionarLancamentoBtn.addEventListener('click', function() {
@@ -872,14 +940,25 @@
             const grupo = grupoLanc.value;
             const item = itemLanc.value;
             const obra = obraLanc.value;
-            const percent = parseFloat(porcentagemLanc.value) || 0;
-            const valor = (total * percent) / 100;
             
-            if (grupo && item && obra && percent > 0) {
-                lancamentos.push({grupo, item, obra, porcentagem: percent, valor, valorTotal: total});
+            let valor = 0;
+            let tipoInfo = '';
+            
+            if (tipoValorLanc.value === 'porcentagem') {
+                const percent = parseFloat(porcentagemLanc.value) || 0;
+                valor = (total * percent) / 100;
+                tipoInfo = `${percent}%`;
+            } else {
+                valor = parseFloat(valorFixoLanc.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+                tipoInfo = '';
+            }
+            
+            if (grupo && item && obra && valor > 0) {
+                lancamentos.push({grupo, item, obra, tipo: tipoInfo, valor, valorTotal: total});
                 salvarLancamentos();
                 obraLanc.value = '';
                 porcentagemLanc.value = '';
+                valorFixoLanc.value = '';
                 valorCalculadoLanc.textContent = 'R$ 0,00';
                 atualizarListaLancamentos();
             }
@@ -906,13 +985,11 @@
                     doc.text(`SUBGRUPO: ${lanc.item.toUpperCase()}`, 3, y+6);
                     
                     doc.setFontSize(4.5);
-                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)`, 3, y+8);
+                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)}`, 3, y+8);
                     y += 11;
                 });
                 
-                doc.setFontSize(6);
-                doc.text(`Total Sessão: ${formatarMoeda(sessao.total)}`, 3, y);
-                y += 8;
+                y += 3;
                 totalGeral += sessao.total;
             });
             
@@ -929,14 +1006,12 @@
                     doc.text(`SUBGRUPO: ${lanc.item.toUpperCase()}`, 3, y+6);
                     
                     doc.setFontSize(4.5);
-                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)`, 3, y+8);
+                    doc.text(`VALOR = ${formatarMoeda(lanc.valor)}`, 3, y+8);
                     y += 11;
                 });
                 
                 const totalAtual = lancamentos.reduce((sum, lanc) => sum + lanc.valor, 0);
-                doc.setFontSize(6);
-                doc.text(`Total Atual: ${formatarMoeda(totalAtual)}`, 3, y);
-                y += 8;
+                y += 3;
                 totalGeral += totalAtual;
             }
             
@@ -1145,6 +1220,12 @@
                 value1.textContent = document.getElementById('totalLancamentos').textContent;
                 document.getElementById('sidebarValueResultado').textContent = document.getElementById('valorCalculadoLanc').textContent;
                 atualizarSidebarLancamentos();
+            } else if (secao === 'analise') {
+                total1.querySelector('h4').textContent = 'Análise:';
+                total2.style.display = 'none';
+                sidebarValores.style.display = 'none';
+                sidebarLancamentos.style.display = 'none';
+                value1.textContent = nomeArquivoImportado || 'Importar planilha Excel';
             }
         }
         
@@ -1177,7 +1258,7 @@
                 `<li class="sidebar-valor-item">
                     <div><strong>${lanc.obra}</strong></div>
                     <div>${lanc.grupo} - ${lanc.item}</div>
-                    <div>${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)</div>
+                    <div>${formatarMoeda(lanc.valor)} ${lanc.tipo ? (lanc.tipo ? `(${lanc.tipo})` : '') : `(${lanc.porcentagem}%)`}</div>
                     <button onclick="removerLancamento(${index})">×</button>
                 </li>`
             ).join('');
@@ -1218,8 +1299,463 @@
             }
         };
         
+        // Botões de limpar dados
+        document.getElementById('clearPorcentagem').addEventListener('click', function() {
+            if (confirm('Limpar todos os dados de porcentagem?')) {
+                document.getElementById('valorTotal').value = '';
+                document.querySelectorAll('.porcentagem').forEach(input => input.value = '');
+                document.querySelectorAll('.nome-item').forEach(select => select.value = '');
+                calcular();
+            }
+        });
+        
+        document.getElementById('clearValores').addEventListener('click', function() {
+            if (confirm('Limpar todos os valores e sessões?')) {
+                valores = [];
+                sessoesVal = [];
+                localStorage.removeItem('valores');
+                localStorage.removeItem('sessoesVal');
+                document.getElementById('valorTotalVal').value = '';
+                atualizarListaValores();
+                atualizarListaSessoesVal();
+            }
+        });
+        
+        document.getElementById('clearLancamentos').addEventListener('click', function() {
+            if (confirm('Limpar todos os lançamentos e sessões?')) {
+                lancamentos = [];
+                sessoes = [];
+                localStorage.removeItem('lancamentos');
+                localStorage.removeItem('sessoes');
+                document.getElementById('valorTotalLanc').value = '';
+                atualizarListaLancamentos();
+                atualizarListaSessoes();
+            }
+        });
+        
         // Inicializar sidebar
         atualizarSidebarTotals('porcentagem');
+        
+        // Funcionalidade de importação Excel
+        let dadosImportados = null;
+        let nomeArquivoImportado = null;
+        
+        document.getElementById('excelFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) {
+                document.getElementById('processarAnalise').style.display = 'none';
+                return;
+            }
+            
+            nomeArquivoImportado = file.name;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                dadosImportados = XLSX.utils.sheet_to_json(worksheet);
+                
+                document.getElementById('processarAnalise').style.display = 'block';
+                atualizarSidebarTotals('analise');
+            };
+            reader.readAsArrayBuffer(file);
+        });
+        
+        document.getElementById('processarAnalise').addEventListener('click', function() {
+            if (dadosImportados) {
+                processarDadosExcel(dadosImportados);
+                document.getElementById('resetarAnalise').style.display = 'block';
+                document.getElementById('gerarPDFAnalise').style.display = 'block';
+            }
+        });
+        
+        document.getElementById('resetarAnalise').addEventListener('click', function() {
+            document.getElementById('excelFile').value = '';
+            document.getElementById('processarAnalise').style.display = 'none';
+            document.getElementById('resetarAnalise').style.display = 'none';
+            document.getElementById('gerarPDFAnalise').style.display = 'none';
+            const container = document.getElementById('chartContainer');
+            container.style.display = 'none';
+            container.innerHTML = '<canvas id="despesasChart" width="400" height="200"></canvas>';
+            document.getElementById('dadosImportados').innerHTML = '';
+            if (window.chartInstance) {
+                window.chartInstance.destroy();
+            }
+            dadosImportados = null;
+            nomeArquivoImportado = null;
+            atualizarSidebarTotals('analise');
+        });
+        
+        document.getElementById('limparCache').addEventListener('click', function() {
+            if (confirm('Limpar todos os dados salvos e recarregar a página?')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                location.reload(true);
+            }
+        });
+        
+        function processarDadosExcel(dados) {
+            console.log('=== PROCESSANDO DADOS ===');
+            console.log('Dados brutos:', dados);
+            
+            const despesasPorFornecedor = {};
+            let totalDespesas = 0;
+            let datasEncontradas = [];
+            
+            if (dados.length === 0) {
+                alert('Planilha vazia!');
+                return;
+            }
+            
+            const colunas = Object.keys(dados[0]);
+            console.log('Colunas encontradas:', colunas);
+            
+            dados.forEach((linha, index) => {
+                console.log(`\n--- LINHA ${index + 1} ---`);
+                console.log('Dados da linha:', linha);
+                
+                let fornecedor = null;
+                let despesa = null;
+                
+                // Mostrar TODOS os valores da linha primeiro
+                console.log('TODOS OS VALORES DA LINHA:');
+                colunas.forEach(coluna => {
+                    console.log(`  "${coluna}": "${linha[coluna]}" (${typeof linha[coluna]})`);
+                });
+                
+                // Buscar datas na linha
+                colunas.forEach(coluna => {
+                    const valor = linha[coluna];
+                    if (valor) {
+                        const dataStr = String(valor).trim();
+                        // Tentar diferentes formatos de data
+                        const formatosData = [
+                            /\d{1,2}\/\d{1,2}\/\d{4}/, // dd/mm/yyyy
+                            /\d{4}-\d{1,2}-\d{1,2}/, // yyyy-mm-dd
+                            /\d{1,2}-\d{1,2}-\d{4}/, // dd-mm-yyyy
+                        ];
+                        
+                        for (let formato of formatosData) {
+                            if (formato.test(dataStr)) {
+                                const data = new Date(dataStr.replace(/\/(\d{1,2})\/(\d{1,2})\/(\d{4})/, '$3-$2-$1'));
+                                if (!isNaN(data.getTime())) {
+                                    datasEncontradas.push(data);
+                                    console.log(`Data encontrada: ${dataStr} -> ${data.toLocaleDateString('pt-BR')}`);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                });
+                
+                // Buscar fornecedor (primeira coluna com texto)
+                for (let coluna of colunas) {
+                    const valor = linha[coluna];
+                    if (valor && String(valor).trim() && isNaN(parseFloat(valor))) {
+                        fornecedor = String(valor).trim();
+                        console.log(`FORNECEDOR: "${fornecedor}" da coluna "${coluna}"`);
+                        break;
+                    }
+                }
+                
+                // Buscar despesa (priorizar coluna "valor")
+                const numerosEncontrados = [];
+                let valorDaColunaValor = null;
+                
+                colunas.forEach(coluna => {
+                    const valor = linha[coluna];
+                    if (valor !== null && valor !== undefined && valor !== '') {
+                        // Limpar o valor removendo símbolos mas mantendo vírgulas e pontos
+                        let valorLimpo = String(valor).replace(/[R$\s]/g, '');
+                        
+                        // Se tem vírgula E ponto, assumir formato brasileiro (vírgula = decimal)
+                        if (valorLimpo.includes(',') && valorLimpo.includes('.')) {
+                            // Formato: 1.234.567,89 -> remover pontos, trocar vírgula por ponto
+                            valorLimpo = valorLimpo.replace(/\./g, '').replace(',', '.');
+                        } else if (valorLimpo.includes(',')) {
+                            // Só vírgula: pode ser decimal (123,45) ou milhares (1,234)
+                            const partes = valorLimpo.split(',');
+                            if (partes[1] && partes[1].length <= 2) {
+                                // Decimal: 123,45
+                                valorLimpo = valorLimpo.replace(',', '.');
+                            } else {
+                                // Milhares: 1,234 -> remover vírgula
+                                valorLimpo = valorLimpo.replace(/,/g, '');
+                            }
+                        }
+                        
+                        const numero = parseFloat(valorLimpo);
+                        if (!isNaN(numero) && numero !== 0) {
+                            const item = {
+                                coluna, 
+                                valorOriginal: valor, 
+                                valorLimpo: valorLimpo,
+                                numero: numero
+                            };
+                            
+                            // Se é a coluna "valor", armazenar separadamente
+                            if (coluna.toLowerCase().includes('valor')) {
+                                valorDaColunaValor = item;
+                                console.log(`COLUNA VALOR ENCONTRADA: ${numero}`);
+                            }
+                            
+                            numerosEncontrados.push(item);
+                        }
+                    }
+                });
+                
+                console.log('NÚMEROS ENCONTRADOS:', numerosEncontrados);
+                
+                // Priorizar valor da coluna "valor", senão pegar o menor
+                if (valorDaColunaValor) {
+                    despesa = valorDaColunaValor.numero;
+                    console.log(`DESPESA DA COLUNA VALOR: ${despesa}`);
+                } else {
+                    const numerosPositivos = numerosEncontrados.filter(n => n.numero > 0);
+                    if (numerosPositivos.length > 0) {
+                        numerosPositivos.sort((a, b) => a.numero - b.numero);
+                        const numeroValido = numerosPositivos[0];
+                        despesa = numeroValido.numero;
+                        console.log(`DESPESA SELECIONADA: ${despesa} da coluna "${numeroValido.coluna}"`);
+                    }
+                }
+                
+                console.log(`RESULTADO - Fornecedor: "${fornecedor}", Despesa: ${despesa} ${valorDaColunaValor ? '(da coluna VALOR)' : '(menor número)'}`);
+                
+                // Validar se o valor é razoável (não pode ser maior que 1 bilhão)
+                if (fornecedor && despesa && despesa > 0 && despesa < 1000000000) {
+                    if (!despesasPorFornecedor[fornecedor]) {
+                        despesasPorFornecedor[fornecedor] = 0;
+                    }
+                    despesasPorFornecedor[fornecedor] += despesa;
+                    totalDespesas += despesa;
+                    console.log(`✓ ADICIONADO: "${fornecedor}" = R$ ${despesa.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`);
+                    console.log(`   Total acumulado: R$ ${totalDespesas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`);
+                } else {
+                    console.log(`✗ IGNORADO - Fornecedor: "${fornecedor}", Despesa: ${despesa} (valor inválido ou muito alto)`);
+                }
+            });
+            
+            console.log('\n=== RESULTADO FINAL ===');
+            console.log('Despesas por fornecedor:', despesasPorFornecedor);
+            console.log('Total despesas:', totalDespesas);
+            console.log('Valores da coluna VALOR foram priorizados');
+            
+            // Determinar período das datas
+            let periodoTexto = 'Período não identificado';
+            if (datasEncontradas.length > 0) {
+                datasEncontradas.sort((a, b) => a - b);
+                const dataInicial = datasEncontradas[0];
+                const dataFinal = datasEncontradas[datasEncontradas.length - 1];
+                
+                if (dataInicial.getTime() === dataFinal.getTime()) {
+                    periodoTexto = dataInicial.toLocaleDateString('pt-BR');
+                } else {
+                    periodoTexto = `${dataInicial.toLocaleDateString('pt-BR')} a ${dataFinal.toLocaleDateString('pt-BR')}`;
+                }
+                console.log('Período determinado:', periodoTexto);
+            }
+            
+            // Armazenar período globalmente
+            window.periodoAnalise = periodoTexto;
+            
+            if (totalDespesas > 0) {
+                criarGraficoPizza(despesasPorFornecedor, totalDespesas);
+                exibirResumo(despesasPorFornecedor, totalDespesas, dados.length);
+            } else {
+                alert(`Nenhuma despesa válida encontrada!\n\nColunas: ${colunas.join(', ')}\n\nVerifique o console (F12) para detalhes.`);
+            }
+        }
+        
+        function criarGraficoPizza(despesas, total) {
+            console.log('=== VALIDANDO DADOS ===');
+            
+            // Recalcular total para garantir precisão
+            const totalReal = Object.values(despesas).reduce((sum, val) => sum + val, 0);
+            console.log('Total recebido:', total);
+            console.log('Total recalculado:', totalReal);
+            console.log('Diferença:', Math.abs(total - totalReal));
+            console.log('IMPORTANTE: Valores da coluna VALOR foram priorizados');
+            
+            // Usar o total recalculado se houver diferença
+            const totalCorreto = totalReal;
+            
+            // Destruir gráfico anterior se existir
+            if (window.chartInstance) {
+                window.chartInstance.destroy();
+            }
+            
+            const container = document.getElementById('chartContainer');
+            const canvas = document.getElementById('despesasChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Ordenar por valor decrescente
+            const fornecedoresOrdenados = Object.entries(despesas)
+                .sort(([,a], [,b]) => b - a);
+            
+            const labels = fornecedoresOrdenados.map(([fornecedor]) => fornecedor);
+            const valores = fornecedoresOrdenados.map(([, valor]) => valor);
+            const cores = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'];
+            
+            console.log('Fornecedores:', labels);
+            console.log('Valores:', valores);
+            
+            // Criar gráfico de pizza
+            window.chartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: valores,
+                        backgroundColor: cores.slice(0, labels.length),
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 11
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    return data.labels.map((label, i) => {
+                                        const valor = data.datasets[0].data[i];
+                                        return {
+                                            text: `${label}: ${formatarMoeda(valor)}`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            strokeStyle: data.datasets[0].borderColor,
+                                            lineWidth: data.datasets[0].borderWidth,
+                                            index: i
+                                        };
+                                    });
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const valor = context.parsed;
+                                    return `${context.label}: ${formatarMoeda(valor)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+
+            container.style.display = 'block';
+            
+            console.log('=== GRÁFICO DE PIZZA CRIADO ===');
+            
+            // Configurar evento do PDF se ainda não foi configurado
+            const btnPDF = document.getElementById('gerarPDFAnalise');
+            if (btnPDF && !btnPDF.hasAttribute('data-configured')) {
+                btnPDF.setAttribute('data-configured', 'true');
+                btnPDF.addEventListener('click', function() {
+                    gerarPDFAnalise(despesas, totalCorreto);
+                });
+            }
+        }
+        
+        function exibirResumo(despesas, total, totalLinhas) {
+            const container = document.getElementById('dadosImportados');
+            const fornecedores = Object.keys(despesas).length;
+            
+            let html = `
+                <div class="resumo-importacao">
+                    <h3>📊 Resumo da Importação</h3>
+                    <div class="resumo-stats">
+                        <div class="stat-item">
+                            <strong>Total de Registros:</strong> ${totalLinhas}
+                        </div>
+                        <div class="stat-item">
+                            <strong>Fornecedores Únicos:</strong> ${fornecedores}
+                        </div>
+                        <div class="stat-item">
+                            <strong>Total de Despesas:</strong> ${formatarMoeda(total)}
+                        </div>
+                    </div>
+                    <div class="total-geral">
+                        <h3>💰 Total Geral das Despesas: ${formatarMoeda(total)}</h3>
+                    </div>
+
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function gerarPDFAnalise(despesas, total) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Título
+            doc.setFontSize(16);
+            doc.text('ANÁLISE FINANCEIRA', 20, 20);
+            
+            // Período (das datas do Excel)
+            doc.setFontSize(12);
+            const periodo = window.periodoAnalise || 'Período não identificado';
+            doc.text(`Período: ${periodo}`, 20, 30);
+            
+            // Total geral
+            doc.setFontSize(14);
+            doc.text(`Total Geral: ${formatarMoeda(total)}`, 20, 45);
+            
+            // Ordenar fornecedores
+            const fornecedoresOrdenados = Object.entries(despesas)
+                .sort(([,a], [,b]) => b - a);
+            
+            let y = 60;
+            
+            // Cabeçalho da tabela
+            doc.setFontSize(10);
+            doc.text('FORNECEDOR', 20, y);
+            doc.text('VALOR', 120, y);
+            doc.text('%', 170, y);
+            
+            // Linha do cabeçalho
+            doc.line(20, y + 2, 190, y + 2);
+            y += 10;
+            
+            // Dados dos fornecedores
+            fornecedoresOrdenados.forEach(([fornecedor, valor]) => {
+                const percentual = ((valor / total) * 100).toFixed(1);
+                
+                // Quebrar nome longo
+                const nomeFormatado = fornecedor.length > 35 ? 
+                    fornecedor.substring(0, 35) + '...' : fornecedor;
+                
+                doc.setFontSize(8);
+                doc.text(nomeFormatado, 20, y);
+                doc.text(formatarMoeda(valor), 120, y);
+                doc.text(`${percentual}%`, 170, y);
+                
+                y += 8;
+                
+                // Nova página se necessário
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+            
+            // Linha final
+            doc.line(20, y + 2, 190, y + 2);
+            
+            // Salvar PDF
+            const nomeArquivo = `analise-${periodo.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+            doc.save(nomeArquivo);
+        }
 
     </script>
 </body>
