@@ -7,20 +7,186 @@
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    overflow-x: hidden;
+}
+
+.sidebar {
+    width: 250px;
+    background: #1a1a2e;
+    padding: 2rem 1rem 1rem 1rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #2d2d44;
+    color: #cccccc;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-align: left;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+}
+
+.nav-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.nav-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.sidebar-totals {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #555;
+}
+
+.sidebar-total-item {
+    background: #2d2d44;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-total-item h4 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.sidebar-total-item span {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.sidebar-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #555;
+}
+
+.sidebar-section .sidebar-total-item {
+    margin-bottom: 1rem;
+    border: 1px solid #667eea;
+    background: #16213e;
+}
+
+.sidebar-valores h3, .sidebar-sessoes h3, .sidebar-lancamentos h3 {
+    color: #ffffff;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-valores ul, .sidebar-lancamentos ul {
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.sidebar-valor-item {
+    background: #2d2d44;
+    padding: 0.3rem;
+    margin-bottom: 0.3rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    position: relative;
+}
+
+.sidebar-valor-item div {
+    color: #cccccc;
+    margin-bottom: 0.1rem;
+}
+
+.sidebar-valor-item button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    font-size: 8px;
+    cursor: pointer;
+}
+
+.sidebar-sessoes {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #444;
+}
+
+.sidebar-sessao-item {
+    background: #2d2d44;
+    padding: 0.3rem;
+    margin-bottom: 0.3rem;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-sessao-item h4 {
+    color: #cccccc;
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.sidebar-sessao-item button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    font-size: 8px;
+    cursor: pointer;
 }
 
 .container {
-    background: #2d2d44;
+    margin-left: 250px;
     padding: 1rem;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+}
+
+.content {
+    background: #2d2d44;
+    padding: 0.5rem;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    width: 95%;
-    max-width: 500px;
-    max-height: 90vh;
+    width: 100%;
+    height: calc(100vh - 1rem);
+    box-sizing: border-box;
     overflow-y: auto;
 }
 
@@ -31,7 +197,7 @@ h1 {
 }
 
 .input-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
 }
 
 label {
@@ -43,10 +209,10 @@ label {
 
 input {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     border: 2px solid #555;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     background: #1a1a2e;
     color: #ffffff;
     transition: border-color 0.3s;
@@ -59,10 +225,10 @@ input:focus {
 
 select {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     border: 2px solid #555;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 12px;
     background: #1a1a2e;
     color: #ffffff;
     transition: border-color 0.3s;
@@ -130,7 +296,22 @@ select option {
     flex-wrap: wrap;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .container {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 0.5rem;
+    }
+    
+    .content {
+        padding: 1rem;
+        min-height: calc(100vh - 1rem);
+    }
+    
     .porcentagem-item {
         flex-direction: column;
         gap: 5px;
@@ -139,20 +320,22 @@ select option {
     .nome-item, .porcentagem {
         width: 100%;
     }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 180px;
+    }
     
     .container {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+        padding: 0.25rem;
+    }
+    
+    .content {
         padding: 0.5rem;
-        width: 98%;
-    }
-    
-    .menu-buttons {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5px;
-    }
-    
-    .menu-btn {
-        padding: 8px;
-        font-size: 12px;
+        border-radius: 5px;
     }
 }
 
@@ -171,51 +354,29 @@ select option {
 
 .total-porcentagens {
     background: #1a1a2e;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 1rem;
-    border: 2px solid #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-top: 0.3rem;
+    border: 1px solid #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .total-porcentagens h3 {
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 #totalCalculado {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     transition: color 0.3s;
+    margin: 0;
 }
 
-.menu-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 2rem;
-}
 
-.menu-btn {
-    padding: 12px;
-    border: 2px solid #555;
-    border-radius: 8px;
-    background: #1a1a2e;
-    color: #cccccc;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-.menu-btn:hover {
-    border-color: #667eea;
-}
-
-.menu-btn.active {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
 
 .section {
     display: none;
@@ -223,6 +384,15 @@ select option {
 
 .section.active {
     display: block;
+}
+
+.section h2 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 0.3rem;
 }
 
 .section p {
@@ -258,9 +428,9 @@ select option {
 
 .resultados-detalhados {
     background: #1a1a2e;
-    padding: 1.5rem;
+    padding: 0.8rem;
     border-radius: 8px;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     border: 2px solid #555;
 }
 
@@ -284,14 +454,14 @@ select option {
 
 .add-item-btn {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     background: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .add-item-btn:hover {
@@ -300,7 +470,7 @@ select option {
 
 .itens-cadastrados {
     background: #1a1a2e;
-    padding: 1.5rem;
+    padding: 0.8rem;
     border-radius: 8px;
     border: 2px solid #555;
 }
@@ -341,14 +511,14 @@ select option {
 
 .pdf-btn {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     background: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .pdf-btn:hover {
@@ -357,42 +527,50 @@ select option {
 
 .resultado-lanc {
     background: #1a1a2e;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    margin: 1rem 0;
-    border: 2px solid #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+    border: 1px solid #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .resultado-lanc h3 {
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 #valorCalculadoLanc {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #28a745;
+    margin: 0;
 }
 
 .total-lancamentos {
     background: #1a1a2e;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    margin: 1rem 0;
-    border: 2px solid #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+    border: 1px solid #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .total-lancamentos h3 {
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 #totalLancamentos {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #28a745;
+    margin: 0;
 }
 
 .lancamento-item {
@@ -469,22 +647,26 @@ select option {
 
 .total-valores, .diferenca-valores {
     background: #1a1a2e;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-    margin: 1rem 0;
-    border: 2px solid #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+    border: 1px solid #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .total-valores h3, .diferenca-valores h3 {
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 #totalValores, #diferencaValores {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #28a745;
+    margin: 0;
 }
 
 .valor-item {

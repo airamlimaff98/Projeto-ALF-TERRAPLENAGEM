@@ -8,336 +8,352 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Calculadora Financeira</h1>
-        
-        <div class="menu-buttons">
-            <button class="menu-btn active" data-section="porcentagem">Porcentagem</button>
-            <button class="menu-btn" data-section="valores">Valores</button>
-            <button class="menu-btn" data-section="cadastro">Lançamentos</button>
-            <button class="menu-btn" data-section="juros">Juros</button>
-            <button class="menu-btn" data-section="desconto">Desconto</button>
-            <button class="menu-btn" data-section="financiamento">Financiamento</button>
+    <div class="sidebar">
+        <div>
+            <h2>Menu</h2>
+            <button class="nav-btn active" data-section="porcentagem">
+                <span>📊</span> Porcentagem
+            </button>
+            <button class="nav-btn" data-section="valores">
+                <span>💰</span> Valores
+            </button>
+            <button class="nav-btn" data-section="cadastro">
+                <span>📋</span> Lançamentos
+            </button>
         </div>
         
-        <div id="valores" class="section">
-            <div class="input-group">
-                <label for="valorTotalVal">Valor Total (R$):</label>
-                <input type="text" id="valorTotalVal" placeholder="R$ 1.000,00">
+        <div class="sidebar-totals">
+            <div class="sidebar-total-item" id="sidebarTotal1">
+                <h4>Total das Porcentagens:</h4>
+                <span id="sidebarValue1">R$ 0,00</span>
             </div>
-            
-            <div class="input-group">
-                <label for="grupoVal">Grupo:</label>
-                <select id="grupoVal">
-                    <option value="">Selecione...</option>
-                    <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
-                    <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
-                    <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
-                    <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
-                    <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
-                    <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
-                    <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
-                    <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
-                    <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
-                    <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
-                    <option value="VEÍCULOS">VEÍCULOS</option>
-                    <option value="MAQUINAS">MAQUINAS</option>
-                    <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
-                    <option value="DESMONTES">DESMONTES</option>
-                    <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
-                    <option value="ALOJAMENTO">ALOJAMENTO</option>
-                    <option value="SOCIEDADE">SOCIEDADE</option>
-                    <option value="IMOVEIS">IMOVEIS</option>
-                    <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
-                    <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
-                    <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
-                    <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
-                </select>
+            <div class="sidebar-total-item" id="sidebarTotal2" style="display: none;">
+                <h4>Diferença:</h4>
+                <span id="sidebarValue2">R$ 0,00</span>
             </div>
-            
-            <div class="input-group">
-                <label for="itemVal">Item:</label>
-                <select id="itemVal">
-                    <option value="">Selecione primeiro o grupo...</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="obraVal">Obra:</label>
-                <select id="obraVal">
-                    <option value="">Selecione...</option>
-                    <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
-                    <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
-                    <option value="ADEVANILSO">ADEVANILSO</option>
-                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                    <option value="ANANIAS">ANANIAS</option>
-                    <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
-                    <option value="AUDILAN">AUDILAN</option>
-                    <option value="BRENNAND">BRENNAND</option>
-                    <option value="BRENNAND - UMC">BRENNAND - UMC</option>
-                    <option value="CANCELADA">CANCELADA</option>
-                    <option value="CASA DONA RITA">CASA DONA RITA</option>
-                    <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
-                    <option value="COMBRITA">COMBRITA</option>
-                    <option value="CONDEC">CONDEC</option>
-                    <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
-                    <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
-                    <option value="DINC">DINC</option>
-                    <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
-                    <option value="ESCRITORIO">ESCRITORIO</option>
-                    <option value="ETEX GYPSUM">ETEX GYPSUM</option>
-                    <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
-                    <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
-                    <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
-                    <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
-                    <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
-                    <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
-                    <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
-                    <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
-                    <option value="LOCASERV">LOCASERV</option>
-                    <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
-                    <option value="MELOSA">MELOSA</option>
-                    <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
-                    <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
-                    <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
-                    <option value="OFICINA">OFICINA</option>
-                    <option value="PEPSICO">PEPSICO</option>
-                    <option value="PETROMUDAS">PETROMUDAS</option>
-                    <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
-                    <option value="PONTAL / ALF">PONTAL / ALF</option>
-                    <option value="PORTO FINO">PORTO FINO</option>
-                    <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
-                    <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
-                    <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
-                    <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
-                    <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
-                    <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
-                    <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
-                    <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
-                    <option value="SWEET FRUIT">SWEET FRUIT</option>
-                    <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
-                    <option value="VCA">VCA</option>
-                    <option value="VSF">VSF</option>
-                    <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
-                    <option value="(Tudo)">(Tudo)</option>
-                    <option value="FRETE CIF">FRETE CIF</option>
-                    <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="valorItemVal">Valor (R$):</label>
-                <input type="text" id="valorItemVal" placeholder="R$ 100,00">
-            </div>
-            
-            <button id="adicionarValor" class="add-item-btn">Adicionar Valor</button>
-            
-            <div class="itens-cadastrados">
-                <h3>Valores Adicionados:</h3>
-                <ul id="listaValores"></ul>
-            </div>
-            
-            <div class="total-valores">
-                <h3>Total Adicionado:</h3>
-                <p id="totalValores">R$ 0,00</p>
-            </div>
-            
-            <div class="diferenca-valores">
-                <h3>Diferença:</h3>
-                <p id="diferencaValores">R$ 0,00</p>
-            </div>
-            
-            <button id="novaSessaoVal" class="add-item-btn">Nova Sessão</button>
-            <button id="gerarPDFVal" class="pdf-btn">Gerar PDF Completo</button>
-            
-            <div class="sessoes-container">
-                <h3>Sessões:</h3>
-                <div id="listaSessoesVal"></div>
-            </div>DFVal" class="pdf-btn">Gerar PDF dos Valores</button>
-        </div>
-        
-        <div id="cadastro" class="section">
-            <div class="input-group">
-                <label for="valorTotalLanc">Valor Total (R$):</label>
-                <input type="text" id="valorTotalLanc" placeholder="R$ 1.000,00">
-            </div>
-            
-            <div class="input-group">
-                <label for="grupoLanc">Grupo:</label>
-                <select id="grupoLanc">
-                    <option value="">Selecione...</option>
-                    <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
-                    <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
-                    <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
-                    <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
-                    <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
-                    <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
-                    <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
-                    <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
-                    <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
-                    <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
-                    <option value="VEÍCULOS">VEÍCULOS</option>
-                    <option value="MAQUINAS">MAQUINAS</option>
-                    <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
-                    <option value="DESMONTES">DESMONTES</option>
-                    <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
-                    <option value="ALOJAMENTO">ALOJAMENTO</option>
-                    <option value="SOCIEDADE">SOCIEDADE</option>
-                    <option value="IMOVEIS">IMOVEIS</option>
-                    <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
-                    <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
-                    <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
-                    <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="itemLanc">Item:</label>
-                <select id="itemLanc">
-                    <option value="">Selecione primeiro o grupo...</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="obraLanc">Obra:</label>
-                <select id="obraLanc">
-                    <option value="">Selecione...</option>
-                    <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
-                    <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
-                    <option value="ADEVANILSO">ADEVANILSO</option>
-                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                    <option value="ANANIAS">ANANIAS</option>
-                    <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
-                    <option value="AUDILAN">AUDILAN</option>
-                    <option value="BRENNAND">BRENNAND</option>
-                    <option value="BRENNAND - UMC">BRENNAND - UMC</option>
-                    <option value="CANCELADA">CANCELADA</option>
-                    <option value="CASA DONA RITA">CASA DONA RITA</option>
-                    <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
-                    <option value="COMBRITA">COMBRITA</option>
-                    <option value="CONDEC">CONDEC</option>
-                    <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
-                    <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
-                    <option value="DINC">DINC</option>
-                    <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
-                    <option value="ESCRITORIO">ESCRITORIO</option>
-                    <option value="ETEX GYPSUM">ETEX GYPSUM</option>
-                    <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
-                    <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
-                    <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
-                    <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
-                    <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
-                    <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
-                    <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
-                    <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
-                    <option value="LOCASERV">LOCASERV</option>
-                    <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
-                    <option value="MELOSA">MELOSA</option>
-                    <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
-                    <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
-                    <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
-                    <option value="OFICINA">OFICINA</option>
-                    <option value="PEPSICO">PEPSICO</option>
-                    <option value="PETROMUDAS">PETROMUDAS</option>
-                    <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
-                    <option value="PONTAL / ALF">PONTAL / ALF</option>
-                    <option value="PORTO FINO">PORTO FINO</option>
-                    <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
-                    <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
-                    <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
-                    <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
-                    <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
-                    <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
-                    <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
-                    <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
-                    <option value="SWEET FRUIT">SWEET FRUIT</option>
-                    <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
-                    <option value="VCA">VCA</option>
-                    <option value="VSF">VSF</option>
-                    <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
-                    <option value="(Tudo)">(Tudo)</option>
-                    <option value="FRETE CIF">FRETE CIF</option>
-                    <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="porcentagemLanc">Porcentagem (%):</label>
-                <input type="number" id="porcentagemLanc" placeholder="10" step="0.01">
-            </div>
-            
-            <div class="resultado-lanc">
-                <h3>Resultado:</h3>
-                <p id="valorCalculadoLanc">R$ 0,00</p>
-            </div>
-            
-            <button id="adicionarLancamento" class="add-item-btn">Adicionar Lançamento</button>
-            
-            <div class="itens-cadastrados">
-                <h3>Lançamentos:</h3>
-                <ul id="listaLancamentos"></ul>
-            </div>
-            
-            <div class="total-lancamentos">
-                <h3>Total dos Lançamentos:</h3>
-                <p id="totalLancamentos">R$ 0,00</p>
-            </div>
-            
-            <button id="novaSessao" class="add-item-btn">Nova Sessão</button>
-            <button id="gerarPDFLanc" class="pdf-btn">Gerar PDF Completo</button>
-            
-            <div class="sessoes-container">
-                <h3>Sessões:</h3>
-                <div id="listaSessoes"></div>
-            </div>
-        </div>
-        
-        <div id="porcentagem" class="section active">
-            <div class="input-group">
-                <label for="valorTotal">Valor Total (R$):</label>
-                <input type="text" id="valorTotal" placeholder="R$ 1.000,00">
-            </div>
-            
-            <div class="porcentagens-container">
-                <div class="porcentagens-header">
-                    <label>Porcentagens (%):</label>
-                    <button type="button" id="addPorcentagem">+</button>
+            <div class="sidebar-section" id="sidebarValores" style="display: none;">
+                <div class="sidebar-valores">
+                    <h3>Valores Adicionados:</h3>
+                    <ul id="sidebarListaValores"></ul>
                 </div>
-                <div id="porcentagensList">
-                    <div class="porcentagem-item">
-                        <select class="nome-item">
-                            <option value="">Selecione...</option>
-                        </select>
-                        <input type="number" class="porcentagem" placeholder="10" step="0.01">
-                        <span class="resultado-item">R$ 0,00</span>
-                        <button type="button" class="remove-btn">×</button>
+                <div class="sidebar-sessoes">
+                    <h3>Sessões:</h3>
+                    <div id="sidebarListaSessoesVal"></div>
+                </div>
+            </div>
+            <div class="sidebar-section" id="sidebarLancamentos" style="display: none;">
+                <div class="sidebar-total-item" id="sidebarResultado">
+                    <h4>Resultado:</h4>
+                    <span id="sidebarValueResultado">R$ 0,00</span>
+                </div>
+                <div class="sidebar-lancamentos">
+                    <h3>Lançamentos:</h3>
+                    <ul id="sidebarListaLancamentos"></ul>
+                </div>
+                <div class="sidebar-sessoes">
+                    <h3>Sessões:</h3>
+                    <div id="sidebarListaSessoes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <div id="porcentagem" class="section active">
+                <h2>📊 Calculadora de Porcentagem</h2>
+                <div class="input-group">
+                    <label for="valorTotal">Valor Total (R$):</label>
+                    <input type="text" id="valorTotal" placeholder="R$ 1.000,00">
+                </div>
+                
+                <div class="porcentagens-container">
+                    <div class="porcentagens-header">
+                        <label>Porcentagens (%):</label>
+                        <button type="button" id="addPorcentagem">+</button>
+                    </div>
+                    <div id="porcentagensList">
+                        <div class="porcentagem-item">
+                            <select class="nome-item">
+                                <option value="">Selecione...</option>
+                            </select>
+                            <input type="number" class="porcentagem" placeholder="10" step="0.01">
+                            <span class="resultado-item">R$ 0,00</span>
+                            <button type="button" class="remove-btn">×</button>
+                        </div>
                     </div>
                 </div>
+                
+                <div class="resultados-detalhados">
+                    <h3>Resultados:</h3>
+                    <div id="listaResultados"></div>
+                </div>
+                
+                <button id="gerarPDF" class="pdf-btn">Gerar PDF</button>
             </div>
             
-            <div class="resultados-detalhados">
-                <h3>Resultados:</h3>
-                <div id="listaResultados"></div>
+            <div id="valores" class="section">
+                <h2>💰 Controle de Valores</h2>
+                <div class="input-group">
+                    <label for="valorTotalVal">Valor Total (R$):</label>
+                    <input type="text" id="valorTotalVal" placeholder="R$ 1.000,00">
+                </div>
+                
+                <div class="input-group">
+                    <label for="grupoVal">Grupo:</label>
+                    <select id="grupoVal">
+                        <option value="">Selecione...</option>
+                        <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
+                        <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
+                        <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
+                        <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
+                        <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
+                        <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
+                        <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
+                        <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
+                        <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
+                        <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
+                        <option value="VEÍCULOS">VEÍCULOS</option>
+                        <option value="MAQUINAS">MAQUINAS</option>
+                        <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
+                        <option value="DESMONTES">DESMONTES</option>
+                        <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
+                        <option value="ALOJAMENTO">ALOJAMENTO</option>
+                        <option value="SOCIEDADE">SOCIEDADE</option>
+                        <option value="IMOVEIS">IMOVEIS</option>
+                        <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
+                        <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
+                        <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
+                        <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="itemVal">Item:</label>
+                    <select id="itemVal">
+                        <option value="">Selecione primeiro o grupo...</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="obraVal">Obra:</label>
+                    <select id="obraVal">
+                        <option value="">Selecione...</option>
+                        <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
+                        <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
+                        <option value="ADEVANILSO">ADEVANILSO</option>
+                        <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                        <option value="ANANIAS">ANANIAS</option>
+                        <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
+                        <option value="AUDILAN">AUDILAN</option>
+                        <option value="BRENNAND">BRENNAND</option>
+                        <option value="BRENNAND - UMC">BRENNAND - UMC</option>
+                        <option value="CANCELADA">CANCELADA</option>
+                        <option value="CASA DONA RITA">CASA DONA RITA</option>
+                        <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
+                        <option value="COMBRITA">COMBRITA</option>
+                        <option value="CONDEC">CONDEC</option>
+                        <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
+                        <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
+                        <option value="DINC">DINC</option>
+                        <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
+                        <option value="ESCRITORIO">ESCRITORIO</option>
+                        <option value="ETEX GYPSUM">ETEX GYPSUM</option>
+                        <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
+                        <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
+                        <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
+                        <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
+                        <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
+                        <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
+                        <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
+                        <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
+                        <option value="LOCASERV">LOCASERV</option>
+                        <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
+                        <option value="MELOSA">MELOSA</option>
+                        <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
+                        <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
+                        <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
+                        <option value="OFICINA">OFICINA</option>
+                        <option value="PEPSICO">PEPSICO</option>
+                        <option value="PETROMUDAS">PETROMUDAS</option>
+                        <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
+                        <option value="PONTAL / ALF">PONTAL / ALF</option>
+                        <option value="PORTO FINO">PORTO FINO</option>
+                        <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
+                        <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
+                        <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
+                        <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
+                        <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
+                        <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
+                        <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
+                        <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
+                        <option value="SWEET FRUIT">SWEET FRUIT</option>
+                        <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
+                        <option value="VCA">VCA</option>
+                        <option value="VSF">VSF</option>
+                        <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
+                        <option value="(Tudo)">(Tudo)</option>
+                        <option value="FRETE CIF">FRETE CIF</option>
+                        <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="valorItemVal">Valor (R$):</label>
+                    <input type="text" id="valorItemVal" placeholder="R$ 100,00">
+                </div>
+                
+                <button id="adicionarValor" class="add-item-btn">Adicionar Valor</button>
+                <button id="novaSessaoVal" class="add-item-btn">Nova Sessão</button>
+                <button id="gerarPDFVal" class="pdf-btn">Gerar PDF Completo</button>
             </div>
             
-            <div class="total-porcentagens">
-                <h3>Total das Porcentagens:</h3>
-                <p id="totalCalculado">R$ 0,00</p>
+            <div id="cadastro" class="section">
+                <h2>📋 Lançamentos por Porcentagem</h2>
+                <div class="input-group">
+                    <label for="valorTotalLanc">Valor Total (R$):</label>
+                    <input type="text" id="valorTotalLanc" placeholder="R$ 1.000,00">
+                </div>
+                
+                <div class="input-group">
+                    <label for="grupoLanc">Grupo:</label>
+                    <select id="grupoLanc">
+                        <option value="">Selecione...</option>
+                        <option value="DESPESAS ADMINISTRATIVAS">DESPESAS ADMINISTRATIVAS</option>
+                        <option value="DESPESAS NAO RECORRENTES">DESPESAS NAO RECORRENTES</option>
+                        <option value="DESPESAS FINANCEIRAS">DESPESAS FINANCEIRAS</option>
+                        <option value="IMPOSTOS TAXAS E CONTRIBUICOES">IMPOSTOS TAXAS E CONTRIBUICOES</option>
+                        <option value="EMPRESTIMOS E FINANCIAMENTOS">EMPRESTIMOS E FINANCIAMENTOS</option>
+                        <option value="CUSTOS/DESPESAS FIXAS">CUSTOS/DESPESAS FIXAS</option>
+                        <option value="FOLHA DE PG E DESP. COM PESSOA">FOLHA DE PG E DESP. COM PESSOA</option>
+                        <option value="MATERIAIS E INSUMOS APLICADOS EM OBRA">MATERIAIS E INSUMOS APLICADOS EM OBRA</option>
+                        <option value="SEGURANÇA DO TRABALHO">SEGURANÇA DO TRABALHO</option>
+                        <option value="FRETES E CARRETOS">FRETES E CARRETOS</option>
+                        <option value="VEÍCULOS">VEÍCULOS</option>
+                        <option value="MAQUINAS">MAQUINAS</option>
+                        <option value="EQUIPAMENTOS">EQUIPAMENTOS</option>
+                        <option value="DESMONTES">DESMONTES</option>
+                        <option value="VIGILÂNCIA PATRIMONIAL">VIGILÂNCIA PATRIMONIAL</option>
+                        <option value="ALOJAMENTO">ALOJAMENTO</option>
+                        <option value="SOCIEDADE">SOCIEDADE</option>
+                        <option value="IMOVEIS">IMOVEIS</option>
+                        <option value="VEIC. MAQ. EQUIP.">VEIC. MAQ. EQUIP.</option>
+                        <option value="ELETRODOMESTICO/COMPUTADORES">ELETRODOMESTICO/COMPUTADORES</option>
+                        <option value="FERRAMENTAS E MATERIAL PERMANENTE">FERRAMENTAS E MATERIAL PERMANENTE</option>
+                        <option value="IMOVEIS MANUT.">IMOVEIS MANUT.</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="itemLanc">Item:</label>
+                    <select id="itemLanc">
+                        <option value="">Selecione primeiro o grupo...</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="obraLanc">Obra:</label>
+                    <select id="obraLanc">
+                        <option value="">Selecione...</option>
+                        <option value="3P ENERGIA - NOVA DESCOBERTA">3P ENERGIA - NOVA DESCOBERTA</option>
+                        <option value="A.L.F MATRIZ">A.L.F MATRIZ</option>
+                        <option value="ADEVANILSO">ADEVANILSO</option>
+                        <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                        <option value="ANANIAS">ANANIAS</option>
+                        <option value="ATIVA MINERAÇÃO (FLORESTA)">ATIVA MINERAÇÃO (FLORESTA)</option>
+                        <option value="AUDILAN">AUDILAN</option>
+                        <option value="BRENNAND">BRENNAND</option>
+                        <option value="BRENNAND - UMC">BRENNAND - UMC</option>
+                        <option value="CANCELADA">CANCELADA</option>
+                        <option value="CASA DONA RITA">CASA DONA RITA</option>
+                        <option value="CENTRO DE MANUTENÇÃO">CENTRO DE MANUTENÇÃO</option>
+                        <option value="COMBRITA">COMBRITA</option>
+                        <option value="CONDEC">CONDEC</option>
+                        <option value="DESCONTOS CONCEDIDOS">DESCONTOS CONCEDIDOS</option>
+                        <option value="DEVOLUÇÃO">DEVOLUÇÃO</option>
+                        <option value="DINC">DINC</option>
+                        <option value="ELETRICA - BRENNAND">ELETRICA - BRENNAND</option>
+                        <option value="ESCRITORIO">ESCRITORIO</option>
+                        <option value="ETEX GYPSUM">ETEX GYPSUM</option>
+                        <option value="FAZENDA T. PROMETIDA">FAZENDA T. PROMETIDA</option>
+                        <option value="GABRIEL - GVS CONSTRUTORA">GABRIEL - GVS CONSTRUTORA</option>
+                        <option value="HTB - AEROPORTO">HTB - AEROPORTO</option>
+                        <option value="IGREJA VERBO DA VIDA">IGREJA VERBO DA VIDA</option>
+                        <option value="INOX TEC - ATERRO">INOX TEC - ATERRO</option>
+                        <option value="JOCA - MATSUMOTO">JOCA - MATSUMOTO</option>
+                        <option value="JOSÉ VIOMAR FILGUEIRA">JOSÉ VIOMAR FILGUEIRA</option>
+                        <option value="JPW - SE TERESINA">JPW - SE TERESINA</option>
+                        <option value="LOCASERV">LOCASERV</option>
+                        <option value="LOTEAMENTO GABRIEL">LOTEAMENTO GABRIEL</option>
+                        <option value="MELOSA">MELOSA</option>
+                        <option value="MINERADORA JAGUARARI">MINERADORA JAGUARARI</option>
+                        <option value="MONSANTO DO BRASIL LTDA">MONSANTO DO BRASIL LTDA</option>
+                        <option value="OBRA SE COREMAS PB">OBRA SE COREMAS PB</option>
+                        <option value="OFICINA">OFICINA</option>
+                        <option value="PEPSICO">PEPSICO</option>
+                        <option value="PETROMUDAS">PETROMUDAS</option>
+                        <option value="PETROVILLE - NARDINI">PETROVILLE - NARDINI</option>
+                        <option value="PONTAL / ALF">PONTAL / ALF</option>
+                        <option value="PORTO FINO">PORTO FINO</option>
+                        <option value="REPUBLICA 01 / COHAB">REPUBLICA 01 / COHAB</option>
+                        <option value="REPUBLICA 02 / V. DÉBORA">REPUBLICA 02 / V. DÉBORA</option>
+                        <option value="RITA DE LIMA FILGUEIRA">RITA DE LIMA FILGUEIRA</option>
+                        <option value="ROMARIO SANTOS SILVA">ROMARIO SANTOS SILVA</option>
+                        <option value="SANTANA DO SOBRADO">SANTANA DO SOBRADO</option>
+                        <option value="SOL DO SÃO FRANCISCO">SOL DO SÃO FRANCISCO</option>
+                        <option value="SSF I - TERRAPLENAGEM">SSF I - TERRAPLENAGEM</option>
+                        <option value="SWEET DRENAGEM">SWEET DRENAGEM</option>
+                        <option value="SWEET FRUIT">SWEET FRUIT</option>
+                        <option value="TRANSPORTADORA CRUZ DE MA.">TRANSPORTADORA CRUZ DE MA.</option>
+                        <option value="VCA">VCA</option>
+                        <option value="VSF">VSF</option>
+                        <option value="ZANLORENZI - ESTRADA">ZANLORENZI - ESTRADA</option>
+                        <option value="(Tudo)">(Tudo)</option>
+                        <option value="FRETE CIF">FRETE CIF</option>
+                        <option value="EH06 Locações - Arizona">EH06 Locações - Arizona</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="porcentagemLanc">Porcentagem (%):</label>
+                    <input type="number" id="porcentagemLanc" placeholder="10" step="0.01">
+                </div>
+                
+                <button id="adicionarLancamento" class="add-item-btn">Adicionar Lançamento</button>
+                <button id="novaSessao" class="add-item-btn">Nova Sessão</button>
+                <button id="gerarPDFLanc" class="pdf-btn">Gerar PDF Completo</button>
             </div>
             
-            <button id="gerarPDF" class="pdf-btn">Gerar PDF</button>
-        </div>
-        
-        <div id="juros" class="section">
-            <p>Calculadora de Juros - Em breve</p>
-        </div>
-        
-        <div id="desconto" class="section">
-            <p>Calculadora de Desconto - Em breve</p>
-        </div>
-        
-        <div id="financiamento" class="section">
-            <p>Calculadora de Financiamento - Em breve</p>
+            <!-- Elementos ocultos para cálculos -->
+            <div style="display: none;">
+                <div class="total-porcentagens">
+                    <p id="totalCalculado">R$ 0,00</p>
+                </div>
+                <div class="total-valores">
+                    <p id="totalValores">R$ 0,00</p>
+                </div>
+                <div class="diferenca-valores">
+                    <p id="diferencaValores">R$ 0,00</p>
+                </div>
+                <div class="total-lancamentos">
+                    <p id="totalLancamentos">R$ 0,00</p>
+                </div>
+                <div class="itens-cadastrados">
+                    <ul id="listaValores"></ul>
+                </div>
+                <div class="sessoes-container">
+                    <div id="listaSessoesVal"></div>
+                </div>
+                <div class="itens-cadastrados">
+                    <ul id="listaLancamentos"></ul>
+                </div>
+                <div class="sessoes-container">
+                    <div id="listaSessoes"></div>
+                </div>
+                <div class="resultado-lanc">
+                    <p id="valorCalculadoLanc">R$ 0,00</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -601,6 +617,10 @@
                     <button onclick="removerSessao(${index})">×</button>
                 </div>`
             ).join('');
+            
+            if (document.querySelector('.nav-btn.active').dataset.section === 'cadastro') {
+                atualizarSidebarLancamentos();
+            }
         }
         
         window.removerSessao = function(index) {
@@ -649,6 +669,10 @@
             const percent = parseFloat(porcentagemLanc.value) || 0;
             const resultado = (total * percent) / 100;
             valorCalculadoLanc.textContent = formatarMoeda(resultado);
+            
+            if (document.querySelector('.nav-btn.active').dataset.section === 'cadastro') {
+                document.getElementById('sidebarValueResultado').textContent = formatarMoeda(resultado);
+            }
         }
         
         function atualizarListaLancamentos() {
@@ -687,6 +711,7 @@
         atualizarListaLancamentos();
         atualizarListaSessoes();
         atualizarListaValores();
+        atualizarListaSessoesVal();
         
         // Evento para grupo da aba valores
         grupoVal.addEventListener('change', function() {
@@ -735,6 +760,43 @@
                 atualizarListaValores();
             }
         });
+        
+        // Nova sessão para valores
+        document.getElementById('novaSessaoVal').addEventListener('click', function() {
+            if (valores.length > 0) {
+                const total = valores.reduce((sum, val) => sum + val.valor, 0);
+                sessoesVal.push({
+                    numero: sessaoAtualVal++,
+                    valores: [...valores],
+                    total: total
+                });
+                valores = [];
+                localStorage.setItem('sessoesVal', JSON.stringify(sessoesVal));
+                salvarValores();
+                atualizarListaValores();
+                atualizarListaSessoesVal();
+            }
+        });
+        
+        function atualizarListaSessoesVal() {
+            const listaSessoesVal = document.getElementById('listaSessoesVal');
+            listaSessoesVal.innerHTML = sessoesVal.map((sessao, index) => 
+                `<div class="sessao-item">
+                    <h4>Sessão ${sessao.numero} - Total: ${formatarMoeda(sessao.total)}</h4>
+                    <button onclick="removerSessaoVal(${index})">×</button>
+                </div>`
+            ).join('');
+            
+            if (document.querySelector('.nav-btn.active').dataset.section === 'valores') {
+                atualizarSidebarValores();
+            }
+        }
+        
+        window.removerSessaoVal = function(index) {
+            sessoesVal.splice(index, 1);
+            localStorage.setItem('sessoesVal', JSON.stringify(sessoesVal));
+            atualizarListaSessoesVal();
+        }
         
         // PDF dos valores
         document.getElementById('gerarPDFVal').addEventListener('click', function() {
@@ -1026,16 +1088,139 @@
             calcular();
         });
         
-        // Navegação entre seções
-        document.querySelectorAll('.menu-btn').forEach(btn => {
+        // Navegação da sidebar
+        document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 
                 this.classList.add('active');
                 document.getElementById(this.dataset.section).classList.add('active');
+                atualizarSidebarTotals(this.dataset.section);
             });
         });
+        
+        function atualizarSidebarTotals(secao) {
+            const total1 = document.getElementById('sidebarTotal1');
+            const total2 = document.getElementById('sidebarTotal2');
+            const value1 = document.getElementById('sidebarValue1');
+            const value2 = document.getElementById('sidebarValue2');
+            const sidebarValores = document.getElementById('sidebarValores');
+            const sidebarLancamentos = document.getElementById('sidebarLancamentos');
+            
+            if (secao === 'porcentagem') {
+                total1.querySelector('h4').textContent = 'Total Adicionado:';
+                total2.querySelector('h4').textContent = 'Diferença:';
+                total2.style.display = 'flex';
+                sidebarValores.style.display = 'none';
+                sidebarLancamentos.style.display = 'none';
+                
+                const totalCalc = parseFloat(document.getElementById('totalCalculado').textContent.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+                const valorTotalInput = parseFloat(valorTotal.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+                const diferenca = valorTotalInput - totalCalc;
+                
+                value1.textContent = document.getElementById('totalCalculado').textContent;
+                value2.textContent = formatarMoeda(diferenca);
+                
+                if (Math.abs(diferenca) < 0.01) {
+                    value2.style.color = '#28a745';
+                } else {
+                    value2.style.color = '#dc3545';
+                }
+            } else if (secao === 'valores') {
+                total1.querySelector('h4').textContent = 'Total Adicionado:';
+                total2.querySelector('h4').textContent = 'Diferença:';
+                total2.style.display = 'flex';
+                sidebarValores.style.display = 'block';
+                sidebarLancamentos.style.display = 'none';
+                value1.textContent = document.getElementById('totalValores').textContent;
+                value2.textContent = document.getElementById('diferencaValores').textContent;
+                value2.style.color = document.getElementById('diferencaValores').style.color;
+                atualizarSidebarValores();
+            } else if (secao === 'cadastro') {
+                total1.querySelector('h4').textContent = 'Total dos Lançamentos:';
+                total2.style.display = 'none';
+                sidebarValores.style.display = 'none';
+                sidebarLancamentos.style.display = 'block';
+                value1.textContent = document.getElementById('totalLancamentos').textContent;
+                document.getElementById('sidebarValueResultado').textContent = document.getElementById('valorCalculadoLanc').textContent;
+                atualizarSidebarLancamentos();
+            }
+        }
+        
+        function atualizarSidebarValores() {
+            const sidebarListaValores = document.getElementById('sidebarListaValores');
+            const sidebarListaSessoesVal = document.getElementById('sidebarListaSessoesVal');
+            
+            sidebarListaValores.innerHTML = valores.map((val, index) => 
+                `<li class="sidebar-valor-item">
+                    <div><strong>${val.obra}</strong></div>
+                    <div>${val.grupo} - ${val.item}</div>
+                    <div>${formatarMoeda(val.valor)}</div>
+                    <button onclick="removerValor(${index})">×</button>
+                </li>`
+            ).join('');
+            
+            sidebarListaSessoesVal.innerHTML = sessoesVal.map((sessao, index) => 
+                `<div class="sidebar-sessao-item">
+                    <h4>Sessão ${sessao.numero} - ${formatarMoeda(sessao.total)}</h4>
+                    <button onclick="removerSessaoVal(${index})">×</button>
+                </div>`
+            ).join('');
+        }
+        
+        function atualizarSidebarLancamentos() {
+            const sidebarListaLancamentos = document.getElementById('sidebarListaLancamentos');
+            const sidebarListaSessoes = document.getElementById('sidebarListaSessoes');
+            
+            sidebarListaLancamentos.innerHTML = lancamentos.map((lanc, index) => 
+                `<li class="sidebar-valor-item">
+                    <div><strong>${lanc.obra}</strong></div>
+                    <div>${lanc.grupo} - ${lanc.item}</div>
+                    <div>${formatarMoeda(lanc.valor)} (${lanc.porcentagem}%)</div>
+                    <button onclick="removerLancamento(${index})">×</button>
+                </li>`
+            ).join('');
+            
+            sidebarListaSessoes.innerHTML = sessoes.map((sessao, index) => 
+                `<div class="sidebar-sessao-item">
+                    <h4>Sessão ${sessao.numero} - ${formatarMoeda(sessao.total)}</h4>
+                    <button onclick="removerSessao(${index})">×</button>
+                </div>`
+            ).join('');
+        }
+        
+        // Atualizar sidebar quando valores mudam
+        const originalCalcular = calcular;
+        calcular = function() {
+            originalCalcular();
+            if (document.querySelector('.nav-btn.active').dataset.section === 'porcentagem') {
+                atualizarSidebarTotals('porcentagem');
+            }
+        };
+        
+        const originalAtualizarListaValores = atualizarListaValores;
+        atualizarListaValores = function() {
+            originalAtualizarListaValores();
+            if (document.querySelector('.nav-btn.active').dataset.section === 'valores') {
+                document.getElementById('sidebarValue1').textContent = document.getElementById('totalValores').textContent;
+                document.getElementById('sidebarValue2').textContent = document.getElementById('diferencaValores').textContent;
+                atualizarSidebarValores();
+            }
+        };
+        
+        const originalAtualizarListaLancamentos = atualizarListaLancamentos;
+        atualizarListaLancamentos = function() {
+            originalAtualizarListaLancamentos();
+            if (document.querySelector('.nav-btn.active').dataset.section === 'cadastro') {
+                document.getElementById('sidebarValue1').textContent = document.getElementById('totalLancamentos').textContent;
+                atualizarSidebarLancamentos();
+            }
+        };
+        
+        // Inicializar sidebar
+        atualizarSidebarTotals('porcentagem');
+
     </script>
 </body>
 </html>
